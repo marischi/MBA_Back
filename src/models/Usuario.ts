@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
-mongoose.Promise = global.Promise;
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
-type UserType = {
+export interface IUsuario extends Document {
   nome: string;
   email: string;
   hashSenha: string;
-};
+  token: string;
+}
 
-const schema = new mongoose.Schema<UserType>({
+const usuarioSchema = new Schema<IUsuario>({
   nome: {
     type: String,
     required: true,
@@ -20,10 +20,19 @@ const schema = new mongoose.Schema<UserType>({
     type: String,
     required: true,
   },
+  token: {
+    type: String,
+    required: true,
+  },
 });
 
 const modelName: string = 'Usuario';
+const isConnected = mongoose.connection;
+const modelExists = mongoose.connection.models[modelName];
+const modelExistsInConnection = isConnected && modelExists;
 
-export default mongoose.connection && mongoose.connection.models[modelName]
+const Usuario = modelExistsInConnection
   ? mongoose.connection.models[modelName]
-  : mongoose.model<UserType>(modelName, schema);
+  : mongoose.model<IUsuario>(modelName, usuarioSchema);
+
+export default Usuario as Model<IUsuario>;

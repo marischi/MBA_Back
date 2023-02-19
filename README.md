@@ -13,6 +13,7 @@ Projetos do curso [XPe](https://www.xpeducacao.com.br/)
 - cors
 - dotenv
 - bcrypt
+- jsonwebtoken
 - express-fileupload
 - express-validator
 - jimp
